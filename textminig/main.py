@@ -3,6 +3,8 @@ from modules import *
 from data_config import *
 from display_figures import *
 from data_parse import *
+from NaiveBays import *
+from SVM import *
 
 # load dataset training
 dataset_20_train = loading_data('train')
@@ -40,13 +42,49 @@ mydata_test_df['data'] = mydata_test_df.data.map(alphanumeric).map(punc_lower)
 #print (mydata_test_df.head())
 
 # tokenizing and filtering of stopwords	
-X_train_cv, X_test_cv, X_train_cv_df, X_test_cv_df = tokenize_text(mydata_train_df, mydata_test_df)
-print (X_train_cv_df.head())
+X_train_cv, X_test_cv, X_train_cv_df, X_test_cv_df, count_vect = tokenize_text(mydata_train_df, mydata_test_df)
+#print (X_train_cv_df.head())
 
 # Creating a document-term matrix using TF-IDF
-X_train_tfidfV, X_test_tfidfV, X_train_tfidfV_df, X_test_tfidfV_df = TfidfVectorizer_text(mydata_train_df, mydata_test_df)
-print (X_train_tfidfV_df.head())
+X_train_tfidfV, X_test_tfidfV, X_train_tfidfV_df = TfidfVectorizer_text(mydata_train_df, mydata_test_df)
+#print (X_train_tfidfV_df.head())
 
-tfidfV = TfidfVectorizer()
-xdd = tfidfV.fit_transform(X_train_tfidfV_df) 
-print (xdd)
+#tf-id transform
+xtrain_tfidf, tfidf_transformer = Tfid_transform(X_train_cv)
+#print (xtrain_tfidf.shape)
+
+
+# using naïve Bayes classifier test data
+print ("\n\n Naive Bays \n ----------------------- \n ")
+clf = NaivBaysTestingData(xtrain_tfidf, dataset_20_train, mydata_test_df, X_test_cv)
+
+# using pipeline  test data
+NaivBaysPipline(mydata_train_df, mydata_test_df, dataset_20_test)
+
+#test customized : 	
+NaivBaysTest(count_vect, tfidf_transformer, clf, dataset_20_train)
+
+# ---------------------------------------------------------------
+
+# Evaluation of the performance on the test set using SVM Classifier
+print ("\n\n SVM \n ----------------------- \n ")
+clf2 = SVMTestingData(xtrain_tfidf, dataset_20_train, mydata_test_df, X_test_cv)
+
+# using pipeline  test data
+SVMTestingPipeline(mydata_train_df, mydata_test_df, dataset_20_test)
+
+#test customized : 	
+SVMTest(count_vect, tfidf_transformer, clf2, dataset_20_train)
+
+
+# ---------------------------------------------------------------
+
+# Evaluation of the performance on the test set using SVM Classifier
+print ("\n\n SVM \n ----------------------- \n ")
+clf2 = SVMTestingData(xtrain_tfidf, dataset_20_train, mydata_test_df, X_test_cv)
+
+# using pipeline  test data
+SVMTestingPipeline(mydata_train_df, mydata_test_df, dataset_20_test)
+
+#test customized : 	
+SVMTest(count_vect, tfidf_transformer, clf2, dataset_20_train)

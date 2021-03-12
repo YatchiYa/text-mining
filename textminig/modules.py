@@ -1,12 +1,12 @@
 
 
 from sklearn.naive_bayes import MultinomialNB
-from sklearn.naive_bayes import BernoulliNB
 from sklearn.pipeline import Pipeline
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.linear_model import SGDClassifier
+
 from sklearn.linear_model import LogisticRegression
 from nltk.stem.snowball import SnowballStemmer
 from nltk import word_tokenize          
@@ -16,8 +16,12 @@ from sklearn.ensemble import RandomForestClassifier
 import numpy as np
 import nltk
 
-import matplotlib.pyplot as plt
+from sklearn.metrics import classification_report, accuracy_score, confusion_matrix
 
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+import time
 import string
 import warnings
 import re

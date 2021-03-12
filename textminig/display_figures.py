@@ -10,3 +10,11 @@ def diplay_figure_1(dataset):
   plt.axis('equal')
   plt.show()
 
+
+def display_matrix(conf_mat, data):
+	# Plot confusion_matrix
+	fig, ax = plt.subplots(figsize=(15, 10))
+	sns.heatmap(conf_mat, annot=True, cmap = "Set3", fmt ="d", xticklabels=data.target_names, yticklabels=data.target_names)
+	plt.ylabel('Actual')
+	plt.xlabel('Predicted')
+	plt.show()
