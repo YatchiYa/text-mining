@@ -1,0 +1,169 @@
+from sklearn import *
+from sklearn.datasets import make_blobs
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+import seaborn as sns
+
+# charger iris data
+iris = datasets.load_iris()
+
+# les colonnes de notre table
+print ("-----------------------------------------")
+feature_names = iris.feature_names
+print ("feature_names : ")
+print (feature_names)
+
+# data 
+print ("-----------------------------------------")
+print ("data : ")
+data = iris.data
+print (data)
+
+# target 
+print ("-----------------------------------------")
+print ("target : ")
+target = iris.target
+print (target)
+
+# target 
+print ("-----------------------------------------")
+print ("target_names : ")
+target_names = iris.target_names
+print (target_names)
+
+# target 
+print ("-----------------------------------------")
+print ("target_shape : ")
+print(iris.target.shape)
+
+# moyenne de chaque var
+print ("-----------------------------------------")
+print ("moyenne de chaque var : ")
+moy = iris.data.mean(0)
+print(moy)
+
+# moyenne de chaque donnée
+print ("-----------------------------------------")
+print ("moyenne de chaque donnée : ")
+moy2 = iris.data.mean(1)
+print(moy2)
+
+
+# ecart type de chaque var
+print ("-----------------------------------------")
+print ("ecart type de chaque var : ")
+ecart_type = iris.data.std(0)
+print(ecart_type)
+print ("-----------------------------------------")
+print ("ecart type de chaque donnée : ")
+ecart_type = iris.data.std(1)
+print(ecart_type)
+
+# max de chaque var
+print ("-----------------------------------------")
+print ("max de chaque var : ")
+max_var = iris.data.max(0)
+print(max_var)
+print ("-----------------------------------------")
+print ("max de chaque donnée : ")
+max_var = iris.data.max(1)
+print(max_var)
+
+
+# min de chaque var
+print ("-----------------------------------------")
+print ("min de chaque var : ")
+min_var = iris.data.min(0)
+print(min_var)
+print ("-----------------------------------------")
+print ("min de chaque donnée : ")
+min_var = iris.data.min(1)
+print(min_var)
+
+# size
+print ("-----------------------------------------")
+print ("size : ")
+size_data = iris.target.size
+print(size_data)
+
+# shape
+print ("-----------------------------------------")
+print ("size : ")
+shape_data = iris.target.shape
+print(shape_data)
+
+
+# shape
+print ("-----------------------------------------")
+print ("Génération de données et affichage : ")
+# n_sample = nb de données a generer pour chaque cluster
+# n_features = nb de fonctionnalité a générer pour chaque cluster
+# centers = nb de groupe a générer
+# s = la densité des données générer, rapporché ou pas, et on peut voire ça en manipulant les differentes valeur de s et on regardant le graphe généré
+
+# plot with various axes scales
+plt.figure()
+plt.subplot(2, 2, 1)
+
+x, y = make_blobs(n_samples=1000, n_features=2, centers=4)
+
+plt.scatter(x[:,0],x[:,1],c= 'red', marker = '*', s=20)
+plt.ylabel('x_title')
+plt.xlabel('y_title')
+plt.xlim([-15,15])
+plt.ylim([-15,15])
+plt.title('Affichage_title_x')
+plt.grid()
+
+
+z, p = make_blobs(n_samples=1000, n_features=2, centers=4)
+plt.subplot(2, 2, 2)
+plt.scatter(z[:,0],z[:,1],c= 'blue', marker = 'x', s=20)
+plt.ylabel('x_title')
+plt.xlabel('y_title')
+plt.xlim([-15,15])
+plt.ylim([-15,15])
+plt.title('Affichage_title_z')
+plt.grid()
+
+
+# plt.show()
+
+# generation de données
+print ("-----------------------------------------")
+print ("vstack : ")
+
+x1, y1 = make_blobs(n_samples=100, n_features=2, centers=2)
+x2, y2 = make_blobs(n_samples=500, n_features=2, centers=3)
+
+vs = np.vstack((x1, x2))
+print (vs)
+
+print ("vhtack : ")
+vh = np.vstack((x1, x2))
+print (vh)
+
+
+plt.subplot(2, 2, 3)
+print ("-----------------------------------------")
+print ("scatter : ")
+plt.scatter(vs[:,0],vs[:,1],c= 'green', marker = 'x', s=20)
+plt.ylabel('x_title')
+plt.xlabel('y_title')
+plt.title('vstack')
+plt.grid()
+
+
+plt.subplot(2, 2, 4)
+print ("-----------------------------------------")
+print ("scatter : ")
+plt.scatter(vh[:,0],vh[:,1],c= 'yellow', marker = 'x', s=20)
+plt.ylabel('x_title')
+plt.xlabel('y_title')
+plt.title('hstack')
+plt.grid()
+
+#plt.show()
+
+

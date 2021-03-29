@@ -1,0 +1,202 @@
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+import seaborn as sns
+
+from sklearn.linear_model import LinearRegression
+from sklearn.model_selection import train_test_split
+from sklearn.model_selection import cross_val_score
+from sklearn.decomposition import PCA
+from sklearn.preprocessing import StandardScaler
+from sklearn import datasets, preprocessing
+from pandas.plotting import scatter_matrix
+from sklearn.metrics import mean_squared_error, r2_score
+from sklearn.ensemble import GradientBoostingRegressor
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.linear_model import LinearRegression
+from sklearn.ensemble import VotingRegressor
+
+from yellowbrick.target import FeatureCorrelation
+
+# Load the dataset from scikit's data sets
+print ("-----------------------------------------")
+print ("load data : ")
+diabetes = datasets.load_diabetes()
+
+print ("-----------------------------------------")
+feature_names = diabetes.feature_names
+print ("feature_names : ")
+print (feature_names)
+
+
+print ("-----------------------------------------")
+print ("target : ")
+target = diabetes.target.size
+print (target)
+
+
+print ("-----------------------------------------")
+data, targets = diabetes.data, diabetes.target
+print("data --- ")
+print(data)
+print("targets --- ")
+print(targets)
+
+print("correlation v1:")
+X, y = diabetes['data'], diabetes['target']
+
+# Create a list of the feature names
+features = np.array(diabetes['feature_names'])
+
+
+# -------------------------- corr test with FeatureCorrelation
+# Instantiate the visualizer
+visualizer = FeatureCorrelation(labels=features)
+
+# Instantiate the visualizer
+visualizer = FeatureCorrelation(labels=features)
+
+#visualizer.fit(X, y)        # Fit the data to the visualizer
+#visualizer.show()           # Finalize and render the figure
+
+# --------------------------corr
+
+print("correlation v2 :")
+
+def plot_correlation_map(df):
+  corr = df.corr()
+  s , ax = plt.subplots( figsize =( 12 , 10 ) )
+  cmap = sns.diverging_palette( 220 , 10 , as_cmap = True )
+  s = sns.heatmap(
+    corr,
+    cmap = cmap,
+    square=True,
+    cbar_kws={ 'shrink' : .9 },
+    ax=ax,
+    annot = True,
+    annot_kws = { 'fontsize' : 12 }
+  )
+
+
+print ("createa data frame")
+di = pd.DataFrame(diabetes.data)
+di.columns = diabetes.feature_names
+di['target'] = diabetes.target
+x=di.drop('target',axis=1)
+
+#plot_correlation_map(x)
+#plt.show()
+print ("-----------------------------------------")
+print("StandardScaler --- ")
+
+
+scaler = preprocessing.StandardScaler().fit(data)
+X_scaled = scaler.transform(data)
+print(X_scaled)
+
+print("PCA --- ")
+pca = PCA(n_components=2)
+#print (pca)
+pca_data = pca.fit(data).transform(data)
+#print (pca_data)
+
+plt.scatter(pca_data[:,0], pca_data[:,1], s = 130, c = 'red', marker = '*', edgecolors = 'green')
+#plt.show()
+
+
+
+print(" Create linear regression object")
+
+# Load the diabetes dataset
+diabetes_X, diabetes_y = datasets.load_diabetes(return_X_y=True)
+
+# Use only one feature
+diabetes_X = diabetes_X[:, np.newaxis, 2]
+
+# Split the data into training/testing sets
+diabetes_X_train = diabetes_X[:-20]
+diabetes_X_test = diabetes_X[-20:]
+
+# Split the targets into training/testing sets
+diabetes_y_train = diabetes_y[:-20]
+diabetes_y_test = diabetes_y[-20:]
+
+# Create linear regression object
+regr = LinearRegression()
+
+# Train the model using the training sets
+regr.fit(diabetes_X_train, diabetes_y_train)
+
+# Make predictions using the testing set
+diabetes_y_pred = regr.predict(diabetes_X_test)
+
+# The coefficients
+print('Coefficients: \n', regr.coef_)
+# The mean squared error
+print('Mean squared error: %.2f'
+      % mean_squared_error(diabetes_y_test, diabetes_y_pred))
+# The coefficient of determination: 1 is perfect prediction
+print('Coefficient of determination: %.2f'
+      % r2_score(diabetes_y_test, diabetes_y_pred))
+
+# Plot outputs
+plt.scatter(diabetes_X_test, diabetes_y_test,  color='black')
+plt.plot(diabetes_X_test, diabetes_y_pred, color='blue', linewidth=3)
+
+plt.xticks(())
+plt.yticks(())
+
+#plt.show()
+
+
+
+# --------------------------------------------------------
+# Train classifiers
+reg1 = GradientBoostingRegressor(random_state=1)
+reg2 = RandomForestRegressor(random_state=1)
+reg3 = LinearRegression()
+
+reg1.fit(X, y)
+reg2.fit(X, y)
+reg3.fit(X, y)
+
+ereg = VotingRegressor([('gb', reg1), ('rf', reg2), ('lr', reg3)])
+ereg.fit(X, y)
+X, y = datasets.load_diabetes(return_X_y=True)
+
+# Train classifiers
+reg1 = GradientBoostingRegressor(random_state=1)
+reg2 = RandomForestRegressor(random_state=1)
+reg3 = LinearRegression()
+
+reg1.fit(X, y)
+reg2.fit(X, y)
+reg3.fit(X, y)
+
+ereg = VotingRegressor([('gb', reg1), ('rf', reg2), ('lr', reg3)])
+ereg.fit(X, y)
+xt = X[:20]
+
+pred1 = reg1.predict(xt)
+pred2 = reg2.predict(xt)
+pred3 = reg3.predict(xt)
+pred4 = ereg.predict(xt)
+
+pred5 = regr.predict(diabetes_X_test)
+
+
+plt.figure()
+plt.plot(pred1, 'gd', label='GradientBoostingRegressor')
+plt.plot(pred2, 'b^', label='RandomForestRegressor')
+plt.plot(pred3, 'ys', label='LinearRegression')
+plt.plot(pred4, 'r*', ms=10, label='VotingRegressor')
+plt.plot(pred5, 'vb', label='test_linear_reg_made_by_us')
+
+plt.tick_params(axis='x', which='both', bottom=False, top=False,
+                labelbottom=False)
+plt.ylabel('predicted')
+plt.xlabel('training samples')
+plt.legend(loc="best")
+plt.title('Regressor predictions and their average')
+
+plt.show()

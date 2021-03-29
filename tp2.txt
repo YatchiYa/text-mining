@@ -1,0 +1,124 @@
+import pandas as pd
+from sklearn import preprocessing, datasets
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.decomposition import PCA
+from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
+
+#creation de la matrice :
+x = np.array([[1, -1, 2], [2, 0, 0], [0, 1, -1]])
+print ("la matrice X = ")
+print (x)
+
+# la moyenne:
+moy = np.mean(x, 0) 
+print ("\nla moyenne de chaque ligne")
+print (moy)
+
+moy2 = np.mean(x, 1)
+print ("\nla moyenne de ce chaque colonne")
+print (moy2)
+
+moy3 = np.nanmean(x)
+print ("\nla moyenne des données")
+print (moy3)
+
+var = np.nanvar(x)
+print ("\nla variance des données")
+print (var)
+
+var2 = np.var(x, 0)
+print ("\nla variance des lignes")
+print (var2)
+
+var3 = np.var(x, 1)
+print ("\nla variance des colonnes")
+print (var3)
+
+print ("\nnormalize data !")
+scaler = preprocessing.StandardScaler().fit(x)
+#print (scaler.mean_)
+#print (scaler.scale_)
+X_scaled = scaler.transform(x)
+print(X_scaled)
+print ("on remarque que les données ont été normalisé et changé, \najouté à cela, les données sont de type float et l'ensemble de chaque ligne/colonne est de même type et plus au moins rapproché")
+
+print ("\n moyenne et variance")
+print (X_scaled.mean(axis=0))
+print (X_scaled.std(axis=0))
+print("on remaque que la moyenne est 0 et la variance est unifié a 1")
+
+
+
+#creation de la matrice :
+x2 = np.array([[1, -1, 2], [2, 0, 0], [0, 1, -1]])
+print ("la matrice X = ")
+print (x2)
+
+# la moyenne:
+moy = np.mean(x2, 0) 
+print ("\nla moyenne de chaque ligne")
+print (moy)
+
+moy2 = np.mean(x2, 1)
+print ("\nla moyenne de ce chaque colonne")
+print (moy2)
+
+moy3 = np.nanmean(x2)
+print ("\nla moyenne des données")
+print (moy3)
+
+print ("\nnormalisation de données MinMaScaler:")
+min_max_scaler = preprocessing.MinMaxScaler()
+X_train_minmax = min_max_scaler.fit_transform(x2)
+print(X_train_minmax)
+print ("\non remarque la standarisation des variables est differentes par rapport à la methode utilisée.")
+
+print ("\nvisualisation de données: ")
+iris_data = sns.load_dataset('iris')
+iris_d = datasets.load_iris()
+data = iris_d.data
+# On utilise l'argument 'hue' pour fournir une variable de facteur
+sns.lmplot( x="sepal_length", y="sepal_width", data=iris_data, fit_reg=False, hue='species', legend=False)
+plt.legend(loc='lower right')
+#plt.show()
+
+
+print ("Composante PCA for iris data :")
+pca = PCA(n_components=2)
+irisPCA = pca.fit(data).transform(data)
+# Percentage of variance explained for each components
+print('explained variance ratio (first two components): %s'
+      % str(pca.explained_variance_ratio_))
+
+# print (irisPCA)
+
+print ("Composante LDA for iris data :")
+y = iris_d.target
+lda = LinearDiscriminantAnalysis(n_components=2)
+irisLDA = lda.fit(data, y).transform(data)
+#print (irisLDA)
+
+
+print ("le raisonnement : \n l'ensemble des données récolté a été analysé avec les deux algo PCA et Linear Discriminant Analysis\n par conséquant, on affiche l'ensemble des graphes des deux algo selon les nouvelles données qu'on a eu \n tél que on défini les couleurs de chque type\n le nom des variable avec la fonctionnalité target_names\n et on utilise le module plot pour le display des graphes\n sachant que: l'algo LDA pour l'utilisé on utilise la fonctionne fit entre les données de iris et le tableau des target comme 2eme paramettre, \n tandis que le PCA c'est les données directement en paramettre, \n ajouté à cela, les n_components represente le nombre de composant qu'on veut garder et si on mentionne pas, tous les composant seront garder.")
+
+plt.figure()
+colors = ['navy', 'turquoise', 'darkorange']
+lw = 2
+target_names = iris_d.target_names
+
+for color, i, target_name in zip(colors, [0, 1, 2], target_names):
+    plt.scatter(irisLDA[y == i, 0], irisLDA[y == i, 1], color=color, alpha=.8, lw=lw,
+                label=target_name)
+plt.legend(loc='best', shadow=False, scatterpoints=1)
+plt.title('PCA of IRIS dataset')
+
+plt.figure()
+for color, i, target_name in zip(colors, [0, 1, 2], target_names):
+    plt.scatter(irisLDA[y == i, 0], irisLDA[y == i, 1], alpha=.8, color=color,
+                label=target_name)
+plt.legend(loc='best', shadow=False, scatterpoints=1)
+plt.title('LDA of IRIS dataset')
+
+plt.show()
