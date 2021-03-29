@@ -2,20 +2,20 @@ from modules import *
 from display_figures import *
 
 # Naive Bays declaration
-def NaiveBays(xtrain_tfidf, data):
-	mnb = MultinomialNB() 
+def Logistic_reg(xtrain_tfidf, data):
+	mnb = LogisticRegression() 
 	mnb.fit(xtrain_tfidf, data.target)
 	return (mnb)
 
 # 20 Newest data test 
-def NaivBaysTestingData(xtrain_tfidf, dataset_20_train, mydata_test_df, X_test_cv):
-	print ("Naive Bayes classifier testing...") 	
-	clf = NaiveBays(xtrain_tfidf, dataset_20_train)
+def Logistic_regTestingData(xtrain_tfidf, dataset_20_train, mydata_test_df, X_test_cv):
+	print ("Logistic_reg classifier testing...") 	
+	clf = Logistic_reg(xtrain_tfidf, dataset_20_train)
 	y_pred_cv_mnb = clf.predict(X_test_cv) 
 	#print (y_pred_cv_mnb)
 	y_test = mydata_test_df.target
-	f = open(naive_bays_file, "w")
-	f.write("\n ----- \n using naïve Bayes classifier\n")
+	f = open(lr_file, "w")
+	f.write("\n ----- \n KNN classifier\n")
 	f.write("The output is all of the predictions with test data\n")
 	f.write(str(y_pred_cv_mnb))
 	f.write("\naccuracy_score : ")
@@ -24,28 +24,29 @@ def NaivBaysTestingData(xtrain_tfidf, dataset_20_train, mydata_test_df, X_test_c
 	f.write(str(classification_report(y_test, y_pred_cv_mnb)))
 	conf_mat = confusion_matrix(y_test, y_pred_cv_mnb)
 	#display_matrix(conf_mat, dataset_20_train)
-	display_matrix(conf_mat, dataset_20_train, naive_bays_file_img)
+	display_matrix(conf_mat, dataset_20_train, lr_file_img)
 	f.close()
 	data_compare.append({
-		'name':"[ Naive Bays manual test ]",
+		'name':"[ Logistic_reg manual test ]",
 		'accuracy_score': accuracy_score(y_test, y_pred_cv_mnb),
 		'classification_report': classification_report(y_test, y_pred_cv_mnb)
 	})
 	return (clf)
 
-# Pipeline test data 20 newest
-def NaivBaysPipline(mydata_train_df, mydata_test_df, dataset_20_test):
+# using pipeline
+def Logistic_regTestingPipeline(mydata_train_df, mydata_test_df, dataset_20_test):
 	start = time.time()
-	text_clf = Pipeline([('vect', CountVectorizer()),
-	                     ('tfidf', TfidfTransformer()),
-	                     ('clf', MultinomialNB()),
+	Logistic_reg_clf = Pipeline([('vect', CountVectorizer()),
+                     ('tfidf', TfidfTransformer()),
+                     ('clf', LogisticRegression()),
 	])
-	text_clf.fit(mydata_train_df.data, mydata_train_df.target)
-	preds = text_clf.predict(mydata_test_df.data)
+	Logistic_reg_clf.fit(mydata_train_df.data, mydata_train_df.target)  
+
+	preds = Logistic_reg_clf.predict(mydata_test_df.data)
 	end = time.time()
-	acc = np.mean(preds == mydata_test_df.target) 
-	f = open(naive_bays_file, "a")
-	f.write("\n\n ------- \nPipeline Naive Bays test :  \n")
+	acc = np.mean(preds == mydata_test_df.target)
+	f = open(lr_file, "a")
+	f.write("\n\n ------- \KNN classifier with pipeline \n")
 	f.write("\n ----->>>>>>   Accuracy = ")
 	f.write(str(acc))
 	f.write("\ntime duration : ")
@@ -57,21 +58,21 @@ def NaivBaysPipline(mydata_train_df, mydata_test_df, dataset_20_test):
 	f.write(str(creport))
 	#print(creport)
 	mx = confusion_matrix(mydata_test_df.target, preds)
+	#print (mx)
 	f.write("\n \n ---------- \n confusion matrix of test data with preds value")
 	f.write(str(mx))
 	f.write("\n")
-	#print (mx)
 	data_duration_compare.append({
-		'name':"[ Naive Bays Pipeline ]",
+		'name':"[ logistic regression Pipeline ]",
 		'accuracy_score': acc,
 		'duration': end-start
 	})
 	f.close()
 
 # customized test data
-def NaivBaysTest(count_vect, tfidf_transformer, clf, data):
-	f = open(naive_bays_file, "a")
-	f.write("\n \n--------------------- \n Naive bays test on data :\n")
+def Logistic_regTest(count_vect, tfidf_transformer, clf, data):
+	f = open(lr_file, "a")
+	f.write("\n \n--------------------- \n logistic regression test on data :\n")
 	f.write("To try to predict the outcome on a new document we need to extract the features using almost the same feature extracting chain as before.")
 	f.write(str(docs_new))
 	xnew_counts = count_vect.transform(docs_new)

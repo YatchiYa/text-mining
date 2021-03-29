@@ -21,6 +21,7 @@ from sklearn.metrics import classification_report, accuracy_score, confusion_mat
 import matplotlib.pyplot as plt
 import seaborn as sns
 
+from termcolor import colored
 import time
 import string
 import warnings
@@ -42,3 +43,17 @@ try :
     nltk.data.find('corpora/wordnet')
 except LookupError:
     nltk.download('wordnet')
+
+data_compare = []
+data_duration_compare = []
+docs_new = ['God is love', 'OpenGL on the GPU is fast', 'I am God loving if not God fearing', 'I like sports', 'GeForce card']
+
+svm_file = "result/SVM_classifier.txt"
+naive_bays_file = "result/NB_classifier.txt"
+knn_file = "result/KNN_classifier.txt"
+lr_file = "result/logistic_regression_classifier.txt"
+
+svm_file_img = "result/img_SVM_classifier.png"
+naive_bays_file_img = "result/img_NB_classifier.png"
+knn_file_img = "result/img_KNN_classifier.png"
+lr_file_img = "result/img_logistic_regression_classifier.png"

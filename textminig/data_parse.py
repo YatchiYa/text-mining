@@ -19,9 +19,7 @@ def tokenize_text(mydata_train_df, mydata_test_df):
 	X_train_cv_df = pd.DataFrame(X_train_cv.todense())
 	X_train_cv_df.columns = sorted(count_vect.vocabulary_)
 
-	X_test_cv_df = pd.DataFrame(X_test_cv.todense())
-	X_test_cv_df.columns = sorted(count_vect.vocabulary_)
-	return (X_train_cv, X_test_cv, X_train_cv_df, X_test_cv_df, count_vect)
+	return (X_train_cv, X_test_cv, X_train_cv_df, count_vect)
 
 def TfidfVectorizer_text(mydata_train_df, mydata_test_df):
 	tfidfV = TfidfVectorizer(stop_words='english') 

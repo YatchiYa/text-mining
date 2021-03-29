@@ -1,0 +1,120 @@
+
+ ----- 
+ using naïve Bayes classifier
+The output is all of the predictions with test data
+[ 7  1 15 ... 10  3 15]
+accuracy_score : 0.6477695167286245
+classification_report : 
+              precision    recall  f1-score   support
+
+           0       0.70      0.17      0.27       319
+           1       0.64      0.65      0.64       389
+           2       0.64      0.59      0.61       394
+           3       0.53      0.73      0.62       392
+           4       0.75      0.59      0.66       385
+           5       0.78      0.73      0.75       395
+           6       0.80      0.74      0.77       390
+           7       0.82      0.70      0.76       396
+           8       0.87      0.67      0.76       398
+           9       0.93      0.78      0.85       397
+          10       0.57      0.91      0.70       399
+          11       0.52      0.78      0.63       396
+          12       0.68      0.48      0.56       393
+          13       0.88      0.67      0.76       396
+          14       0.80      0.69      0.74       394
+          15       0.34      0.92      0.50       398
+          16       0.54      0.70      0.61       364
+          17       0.83      0.76      0.79       376
+          18       0.83      0.27      0.41       310
+          19       0.60      0.01      0.02       251
+
+    accuracy                           0.65      7532
+   macro avg       0.70      0.63      0.62      7532
+weighted avg       0.70      0.65      0.64      7532
+
+
+ ------- 
+Pipeline Naive Bays test :  
+
+ ----->>>>>>   Accuracy = 0.6051513542219862
+time duration : 2.7367467880249023
+                          precision    recall  f1-score   support
+
+             alt.atheism       0.75      0.07      0.12       319
+           comp.graphics       0.70      0.61      0.66       389
+ comp.os.ms-windows.misc       0.68      0.51      0.58       394
+comp.sys.ibm.pc.hardware       0.51      0.75      0.60       392
+   comp.sys.mac.hardware       0.81      0.57      0.67       385
+          comp.windows.x       0.82      0.73      0.78       395
+            misc.forsale       0.87      0.65      0.75       390
+               rec.autos       0.82      0.69      0.75       396
+         rec.motorcycles       0.88      0.64      0.74       398
+      rec.sport.baseball       0.95      0.71      0.81       397
+        rec.sport.hockey       0.59      0.90      0.71       399
+               sci.crypt       0.48      0.81      0.60       396
+         sci.electronics       0.72      0.45      0.55       393
+                 sci.med       0.86      0.63      0.73       396
+               sci.space       0.85      0.62      0.72       394
+  soc.religion.christian       0.23      0.94      0.37       398
+      talk.politics.guns       0.58      0.60      0.59       364
+   talk.politics.mideast       0.86      0.69      0.76       376
+      talk.politics.misc       0.82      0.09      0.16       310
+      talk.religion.misc       0.50      0.00      0.01       251
+
+                accuracy                           0.61      7532
+               macro avg       0.71      0.58      0.58      7532
+            weighted avg       0.72      0.61      0.60      7532
+
+ 
+ ---------- 
+ confusion matrix of test data with preds value[[ 21   1   0   1   1   1   0   0   2   2   9   9   1   2   2 251   5  10
+    0   1]
+ [  0 239  15  20   6  25   2   0   2   0   5  33   4   0   5  32   0   1
+    0   0]
+ [  1  19 201  67   5  22   1   1   2   0  15  26   0   1   4  29   0   0
+    0   0]
+ [  0   5  24 293  17   2   5   0   0   0   8  17  16   0   0   5   0   0
+    0   0]
+ [  0   5  14  71 221   3   7   4   1   0  15  18   5   1   1  17   2   0
+    0   0]
+ [  0  27  18  14   0 290   4   1   0   0   5  20   2   0   2  11   1   0
+    0   0]
+ [  0   1   2  52  13   0 255   8   3   1  10   4   8   0   3  26   4   0
+    0   0]
+ [  0   1   2   3   0   1   9 273   7   1  26  14   9   3   3  37   2   3
+    2   0]
+ [  0   2   0   2   0   1   3  24 253   2  15  14  10   6   3  55   6   2
+    0   0]
+ [  0   4   1   3   0   1   1   0   2 282  33   8   0   2   0  59   1   0
+    0   0]
+ [  0   0   0   1   0   0   0   1   0   4 358   3   0   1   1  28   2   0
+    0   0]
+ [  0   4   4   2   1   3   0   0   1   1  16 319   3   1   2  28   9   2
+    0   0]
+ [  0  10   5  42  10   2   3   7   6   1  12  79 175   8   6  24   2   1
+    0   0]
+ [  0   8   1   3   0   0   1   3   0   0  16   9   4 251   0  94   3   3
+    0   0]
+ [  0   9   3   1   0   0   1   2   0   0  18  25   6   4 244  75   3   2
+    1   0]
+ [  0   0   2   0   0   1   0   0   0   0  14   2   0   2   1 376   0   0
+    0   0]
+ [  0   0   1   0   0   0   0   3   1   1  11  29   0   1   3  90 218   4
+    2   0]
+ [  1   1   0   3   0   0   0   1   6   2   7   4   0   2   0  81   7 260
+    1   0]
+ [  1   1   0   0   0   0   0   1   1   0   8  33   1   4   5 128  92   7
+   28   0]
+ [  4   3   1   1   0   0   0   2   0   1   8   5   0   3   3 190  20   9
+    0   1]]
+
+ 
+--------------------- 
+ Naive bays test on data :
+To try to predict the outcome on a new document we need to extract the features using almost the same feature extracting chain as before.['God is love', 'OpenGL on the GPU is fast', 'I am God loving if not God fearing', 'I like sports', 'GeForce card']
+[15  1 15 10  3]
+God is love ===> [ soc.religion.christian ] 
+OpenGL on the GPU is fast ===> [ comp.graphics ] 
+I am God loving if not God fearing ===> [ soc.religion.christian ] 
+I like sports ===> [ rec.sport.hockey ] 
+GeForce card ===> [ comp.sys.ibm.pc.hardware ] 
